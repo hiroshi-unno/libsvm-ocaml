@@ -1,4 +1,5 @@
 (lang dune 1.10)
+(name libsvm)
 (generate_opam_files true)
 (license "LGPL-2.1+ with OCaml linking exception")
 (authors
