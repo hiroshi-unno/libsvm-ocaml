@@ -500,6 +500,40 @@ CAMLprim value svm_get_nr_sv_stub(value v_model)
   CAMLreturn(Val_long(Svm_model_val(v_model)->l));
 }
 
+static inline value make_svm_node(const char *n)
+{
+	value ret = caml_alloc(2, 0);
+	Store_field(ret, 0, Val_int(((const svm_node*)n)->index));
+	Store_field(ret, 1, caml_copy_double(((const svm_node*)n)->value));
+	return ret;
+}
+
+CAMLprim value svm_get_sv_stub(value v_model, value v_index)
+{
+  CAMLparam2(v_model, v_index);
+  svm_node *sv = Svm_model_val(v_model)->SV[Int_val(v_index)];
+  int len = 0;
+  while(sv[len].index != -1) len++;
+  svm_node **p = (svm_node**) malloc(sizeof(svm_node*) * (len + 1));
+  for(int i = 0;i<len;i++) p[i] = &sv[i];
+  p[len] = NULL;
+  value ret = caml_alloc_array(make_svm_node, (const char**)p);
+  free(p);
+  CAMLreturn(ret);
+}
+
+CAMLprim value svm_get_rho_stub(value v_model, value v_index)
+{
+  CAMLparam2(v_model, v_index);
+  CAMLreturn(caml_copy_double(Svm_model_val(v_model)->rho[Int_val(v_index)]));
+}
+
+CAMLprim value svm_get_sv_coef_stub(value v_model, value v_i, value v_j)
+{
+  CAMLparam3(v_model, v_i, v_j);
+  CAMLreturn(caml_copy_double(Svm_model_val(v_model)->sv_coef[Int_val(v_i)][Int_val(v_j)]));
+}
+
 CAMLprim value svm_get_svr_probability_stub(value v_model)
 {
   CAMLparam1(v_model);

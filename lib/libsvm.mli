@@ -117,6 +117,15 @@ module Svm : sig
     (** [get_n_sv model] @return the total number of support vectors. *)
     val get_n_sv : t -> int
 
+    (** [get_sv model index] @return the index-th support vector. *)
+    val get_sv : t -> int -> (int * float) array
+
+    (** [get_rho model] @return the index-th rho. *)
+    val get_rho : t -> int -> float
+
+    (** [get_sv_coef model i j] @return sv_coef[i][j]. *)
+    val get_sv_coef : t -> int -> int -> float
+
     (** [get_svr_probability model] @return a positive value for a regression
         model with probability information. In the case of no probability
         information, 0 is returned.

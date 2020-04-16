@@ -100,6 +100,9 @@ module Svm = struct
     external svm_get_nr_class : model -> int = "svm_get_nr_class_stub"
     external svm_get_labels : model -> int list = "svm_get_labels_stub"
     external svm_get_nr_sv : model -> int = "svm_get_nr_sv_stub"
+    external svm_get_sv : model -> int -> (int * float) array = "svm_get_sv_stub"
+    external svm_get_rho : model -> int -> float = "svm_get_rho_stub"
+    external svm_get_sv_coef : model -> int -> int -> float = "svm_get_sv_coef_stub"
     external svm_get_svr_probability :
       model -> float = "svm_get_svr_probability_stub"
     external svm_check_probability_model :
@@ -269,6 +272,9 @@ module Svm = struct
       | _ -> Stub.svm_get_labels t
 
     let get_n_sv t = Stub.svm_get_nr_sv t
+    let get_sv t i = Stub.svm_get_sv t i
+    let get_rho t i = Stub.svm_get_rho t i
+    let get_sv_coef t i j = Stub.svm_get_sv_coef t i j
 
     let get_svr_probability t =
       match Stub.svm_get_svm_type t with
