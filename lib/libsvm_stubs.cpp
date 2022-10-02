@@ -400,7 +400,7 @@ CAMLprim value svm_train_stub(value v_prob, value v_param)
 
   error_msg = svm_check_parameter(prob, param);
   if (error_msg)
-    failwith(error_msg);
+    caml_failwith(error_msg);
   model = svm_train(prob, param);
   v_model = alloc_model(model);
 
@@ -424,13 +424,13 @@ CAMLprim value svm_cross_validation_stub(value v_prob, value v_param,
 
   error_msg = svm_check_parameter(prob, param);
   if (error_msg)
-    failwith(error_msg);
+    caml_failwith(error_msg);
 
   n_fold = Long_val(v_n_fold);
   target = Caml_stat_alloc(double,prob->l);
   svm_cross_validation(prob, param, n_fold, target);
 
-  v_target = alloc_bigarray_dims(BIGARRAY_FLOAT64 | BIGARRAY_FORTRAN_LAYOUT,
+  v_target = caml_ba_alloc_dims(CAML_BA_FLOAT64 | CAML_BA_FORTRAN_LAYOUT,
                                  1, target, prob->l);
   CAMLreturn(v_target);
 }
@@ -439,7 +439,7 @@ CAMLprim value svm_save_model_stub(value v_filename, value v_model)
 {
   CAMLparam2(v_filename, v_model);
   if (svm_save_model(String_val(v_filename), Svm_model_val(v_model)) == -1)
-    failwith("Could not save model");
+    caml_failwith("Could not save model");
   CAMLreturn(Val_unit);
 }
 
@@ -450,7 +450,7 @@ CAMLprim value svm_load_model_stub(value v_filename)
 
   svm_model *model = svm_load_model(String_val(v_filename));
   if (model == NULL)
-    failwith("Could not load model.");
+    caml_failwith("Could not load model.");
   v_model = alloc_model(model);
 
   CAMLreturn(v_model);
