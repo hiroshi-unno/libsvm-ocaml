@@ -1,6 +1,6 @@
 open Base
 open Lacaml.D
-open Caml.Format
+open Stdlib.Format
 open Lacaml.Io
 open Libsvm
 

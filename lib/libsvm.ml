@@ -341,7 +341,7 @@ module Svm = struct
       ?(verbose=false)
       problem =
     let params = create_params
-        ~gamma:(Option.value gamma ~default:(Float.(1. / Caml.float problem.Problem.n_feats)))
+        ~gamma:(Option.value gamma ~default:(Float.(1. / Stdlib.float problem.Problem.n_feats)))
         ~svm_type ~kernel ~degree ~coef0 ~c ~nu ~eps
         ~cachesize ~tol ~shrinking ~probability ~weights
     in
@@ -365,7 +365,7 @@ module Svm = struct
       ?(verbose=false)
       ~n_folds problem =
     let params = create_params
-        ~gamma:(Option.value gamma ~default:(Float.(1. / Caml.float problem.Problem.n_feats)))
+        ~gamma:(Option.value gamma ~default:(Float.(1. / Stdlib.float problem.Problem.n_feats)))
         ~svm_type ~kernel ~degree ~coef0 ~c ~nu ~eps
         ~cachesize ~tol ~shrinking ~probability ~weights
     in
@@ -387,7 +387,7 @@ module Svm = struct
         for j = i+1 to n_classes-1 do
           dec_mat.(i).(j) <-    dec_vals.(!count) ;
           dec_mat.(j).(i) <- -. dec_vals.(!count) ;
-          Caml.incr count
+          Stdlib.incr count
         done
       done;
       dec_mat
@@ -457,12 +457,12 @@ module Stats = struct
     check_dimension x y ~location:"calc_accuracy";
     let l = Vec.dim x in
     let n_correct = calc_n_correct x y in
-    Float.(Caml.float n_correct / Caml.float l)
+    Float.(Stdlib.float n_correct / Stdlib.float l)
 
   let calc_mse x y =
     check_dimension x y ~location:"calc_mse";
     let l = Vec.dim x in
-    Float.(Vec.ssqr_diff x y / Caml.(float l))
+    Float.(Vec.ssqr_diff x y / Stdlib.(float l))
 
   let calc_scc x y =
     check_dimension x y ~location:"calc_scc";
@@ -481,7 +481,7 @@ module Stats = struct
       sum_xy := !sum_xy + x.{i} * y.{i};
     done;
     let sqr x = Float.(x * x) in
-    let l = Caml.float l in
+    let l = Stdlib.float l in
     Float.(
       sqr (l * !sum_xy - !sum_x * !sum_y) /
       ((l * !sum_xx - sqr !sum_x) * (l * !sum_yy - sqr !sum_y))

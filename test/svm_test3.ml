@@ -32,4 +32,4 @@ let y_test = Bigarray.Array1.sub y 201 70
 let y_pred = Array.map x_test ~f:(Svm.predict_sparse model)
 let () =
   Stats.calc_accuracy (Lacaml.D.Vec.of_array y_pred) y_test
-  |> Caml.Printf.printf "%f\n%!"
+  |> Stdlib.Printf.printf "%f\n%!"
